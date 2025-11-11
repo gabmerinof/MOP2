@@ -11,7 +11,7 @@ class DatabaseMikro {
 
     static async Initialize() {
         const orm = await initORMConfig();
-        
+
         DatabaseMikro.servicesCache = {
             orm,
             em: orm.em
@@ -23,7 +23,8 @@ class DatabaseMikro {
     }
 
     static getRepository<T>(ent: T) {
-        return DatabaseMikro.servicesCache?.em.getRepository(ent as EntityName<object>);
+
+        return RequestContext.getEntityManager()?.getRepository(ent as EntityName<object>)
     }
 }
 

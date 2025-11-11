@@ -5,6 +5,7 @@ import { User } from '../entities/user.entity';
 import { GeoPointRepository, ProximityFilter } from '../repositories/geo-point.repository';
 import { GeoJSONFeatureCollection } from '../types/geojson.types';
 import { AppError } from '../utils/AppError';
+import { RequestContext } from '@mikro-orm/postgresql';
 
 export interface CreatePointData {
   latitude: number;
@@ -97,9 +98,9 @@ export class GeoPointService {
     return this.getRepository().findAllAsGeoJSONByUser(userid);
   }
 
-  public getRepository(): GeoPointRepository{
-  
-      return DatabaseMikro.getRepository(GeoPoint) as GeoPointRepository
-    }
+  public getRepository(): GeoPointRepository {
+    
+    return DatabaseMikro.getRepository(GeoPoint) as GeoPointRepository
+  }
 
 }
