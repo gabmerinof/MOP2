@@ -22,9 +22,9 @@ class DatabaseMikro {
         return DatabaseMikro.servicesCache;
     }
 
-    static getRepository<T>(ent: T) {
+    static getRepository<T extends EntityName<object>>(ent: T) {
 
-        return RequestContext.getEntityManager()?.getRepository(ent as EntityName<object>)
+        return RequestContext.getEntityManager()?.getRepository(ent)
     }
 }
 
