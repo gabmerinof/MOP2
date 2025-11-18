@@ -30,7 +30,7 @@ export class GeoPointRepository extends EntityRepository<GeoPoint> {
                         ?)`;
 
     const params: any[] = [lng, lat, lng, lat, radius * 1000]; // Convert to meters
-    let paramCount = 3;
+    let paramCount = 5;
 
     if (type) {
       paramCount++;
