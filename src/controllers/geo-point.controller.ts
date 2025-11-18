@@ -36,12 +36,12 @@ export default class GeoPointController implements IController {
   }
 
   private async getAllPoints(req: AuthRequest, res: Response) {
-    const { type, lat, lng, radius } = req.query;
+    const { type, lat, long, radius } = req.query;
 
     let filter;
-    if (lat && lng && radius) {
+    if (lat && long && radius) {
       const latitude = parseFloat(lat as string);
-      const longitude = parseFloat(lng as string);
+      const longitude = parseFloat(long as string);
       const radiusKm = parseFloat(radius as string);
 
       if (isNaN(latitude) || isNaN(longitude) || isNaN(radiusKm)) 

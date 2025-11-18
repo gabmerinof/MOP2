@@ -19,29 +19,28 @@ export class GeoPointRepository extends EntityRepository<GeoPoint> {
                         u.username,
                         u.email,
                         ST_Distance(
-                        ST_SetSRID(ST_MakePoint($1, $2), 4326)::geography,
+                        ST_SetSRID(ST_MakePoint(?, ?), 4326)::geography,
                         ST_SetSRID(ST_MakePoint(gp.longitude, gp.latitude), 4326)::geography
                         ) as distance
                     FROM geo_points gp
                     INNER JOIN users u ON gp.userid = u.userid
                     WHERE ST_DWithin(
-                        ST_SetSRID(ST_MakePoint($1, $2), 4326)::geography,
+                        ST_SetSRID(ST_MakePoint(?, ?), 4326)::geography,
                         ST_SetSRID(ST_MakePoint(gp.longitude, gp.latitude), 4326)::geography,
-                        $3 * 1000
-                    )`;
+                        ?)`;
 
-    const params: any[] = [lng, lat, radius * 1000]; // Convert to meters
+    const params: any[] = [lng, lat, lng, lat, radius * 1000]; // Convert to meters
     let paramCount = 3;
 
     if (type) {
       paramCount++;
-      query += ` AND gp.type = $${paramCount}`;
+      query += ` AND gp.type = ?`;
       params.push(type);
     }
 
     query += ` ORDER BY distance ASC`;
 
-    const result = await this.getEntityManager().execute(query, params);
+    const result = await this.getEntityManager().getConnection().execute(query, params);
 
     return result.map((row: any) => {
       const point = this.getEntityManager().map(GeoPoint, row);
